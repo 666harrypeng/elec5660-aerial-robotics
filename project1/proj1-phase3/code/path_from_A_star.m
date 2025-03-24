@@ -129,22 +129,22 @@ function Optimal_path = path_from_A_star(map)
             % calculate tentative g -> g(m)
             tentative_g = g(x_cur_node, y_cur_node, z_cur_node) + 1;
 
+            % if g(m) is inf -> push to queue
+            if g(x_new_node, y_new_node, z_new_node) == inf
+                % update parent
+                parents(x_new_node, y_new_node, z_new_node, :) = [x_cur_node, y_cur_node, z_cur_node];
+                % calculate h
+                h = calculate_heuristic(x_new_node, y_new_node, z_new_node, xTarget, yTarget, zTarget, heuristic_type);
+                % calculate f
+                f = tentative_g + h;
+                % add to queue
+                queue = [queue; x_new_node, y_new_node, z_new_node, f];
+
             % if new path is better -> if g(m) > g(n) + Cnm
             if tentative_g < g(x_new_node, y_new_node, z_new_node)
                 % update g
                 g(x_new_node, y_new_node, z_new_node) = tentative_g;
-
-                % update parent
-                parents(x_new_node, y_new_node, z_new_node, :) = [x_cur_node, y_cur_node, z_cur_node];
-
-                % calculate h
-                h = calculate_heuristic(x_new_node, y_new_node, z_new_node, xTarget, yTarget, zTarget, heuristic_type);
-
-                % calculate f
-                f = tentative_g + h;
-
-                % add to queue
-                queue = [queue; x_new_node, y_new_node, z_new_node, f];
+                
             end
         end
     end
